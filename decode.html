@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Message Decoder</h1>
+    <p>You'll need the password to retrieve this message.</p>
+    <textarea id="message" class="message" rows="6" cols="60"></textarea>
+    <br>
+    <button id="decrypt" onclick="decoder.unlock();">Decrypt</button>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+    <script>
+      var decoder = {
+        getCypher: function() {
+          cypher_index = document.URL.indexOf("decode.html/") + 12;
+          this.cypher = document.URL.substr(cypher_index);
+        },
+        promptForPassword: function() {
+          this.password = window.prompt("What is the password?", "password");
+        },
+        decrypt: function() {
+          if (this.password == null) {
+            alert("You must enter a password.")
+          }
+          else {
+            this.message = CryptoJS.AES.decrypt(this.cypher, this.password).toString(CryptoJS.enc.Utf8);
+            if (this.message === "") {
+              alert("Incorrect password!");
+            } else {
+              alert(this.message);
+            }
+          }
+        },
+        unlock: function() {
+          this.getCypher()
+          this.promptForPassword()
+          this.decrypt()
+        }
+      }
+    </script>
+  </body>
+</html>
+
